@@ -184,7 +184,6 @@ func AddSong(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
-// getSongDetail fetches additional song details from an external API
 func getSongDetail(group, song string) (*models.SongDetail, error) {
 	url := fmt.Sprintf("http://api.example.com/info?group=%s&song=%s", group, song)
 	resp, err := http.Get(url)
