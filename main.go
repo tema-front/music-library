@@ -8,6 +8,8 @@ import (
 	"music-library/routes"
 	"net/http"
 
+	_ "music-library/docs"
+
 	"github.com/go-chi/chi"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

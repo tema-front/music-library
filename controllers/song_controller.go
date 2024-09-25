@@ -156,7 +156,7 @@ func EditSong(w http.ResponseWriter, r *http.Request) {
 
 // @Summary Add a new song
 // @Description Add a new song to the library
-// @Param song body models.Song true "Song data"
+// @Param song body models.CreateSongParams true "Song data"
 // @Success 201 {object} models.Song
 // @Failure 400 {object} string
 // @Failure 500 {object} string
@@ -164,7 +164,7 @@ func EditSong(w http.ResponseWriter, r *http.Request) {
 func AddSong(w http.ResponseWriter, r *http.Request) {
 	var song models.Song
 	if err := json.NewDecoder(r.Body).Decode(&song); err != nil {
-		http.Error(w, fmt.Sprintf("crror parsing JSON: %v", err), http.StatusBadRequest)
+		http.Error(w, fmt.Sprintf("error parsing JSON: %v", err), http.StatusBadRequest)
 		return
 	}
 

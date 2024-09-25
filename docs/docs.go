@@ -26,7 +26,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Song"
+                            "$ref": "#/definitions/models.CreateSongParams"
                         }
                     }
                 ],
@@ -239,6 +239,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.CreateSongParams": {
+            "type": "object",
+            "properties": {
+                "group": {
+                    "type": "string"
+                },
+                "song": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Song": {
             "type": "object",
             "properties": {

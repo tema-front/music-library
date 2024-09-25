@@ -8,6 +8,11 @@ type SongDetail struct {
 	Link        string `json:"link"`
 }
 
+type CreateSongParams struct {
+	Group       string    `json:"group"`
+	Song        string    `json:"song"`
+}
+
 type Song struct {
 	ID          uint      `gorm:"primarykey" json:"id"`
 	CreatedAt   time.Time `json:"created_at"`
