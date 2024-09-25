@@ -26,6 +26,11 @@ func startServer(router *chi.Mux, port string) {
 	}
 }
 
+// @title Music Library API
+// @version 1.0
+// @description API for managing music library
+// @host localhost:8080
+// @BasePath /
 func main() {
 	config.LoadEnv()
 

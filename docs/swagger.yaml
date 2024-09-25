@@ -1,0 +1,176 @@
+basePath: /
+definitions:
+  models.Song:
+    properties:
+      created_at:
+        type: string
+      group:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      releaseDate:
+        type: string
+      song:
+        type: string
+      text:
+        type: string
+      updated_at:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API for managing music library
+  title: Music Library API
+  version: "1.0"
+paths:
+  /song/{id}/delete:
+    delete:
+      description: Delete a song by ID
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete a song
+  /song/{id}/edit:
+    put:
+      description: Edit song details by ID
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated song data
+        in: body
+        name: song
+        required: true
+        schema:
+          $ref: '#/definitions/models.Song'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Song'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Edit a song
+  /song/{id}/text:
+    get:
+      description: Get the text of a song by its ID with pagination
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: 10
+        description: Limit
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: Offset
+        in: query
+        name: offset
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get song text
+  /song/create:
+    post:
+      description: Add a new song to the library
+      parameters:
+      - description: Song data
+        in: body
+        name: song
+        required: true
+        schema:
+          $ref: '#/definitions/models.Song'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Song'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Add a new song
+  /song/list:
+    get:
+      description: Get songs with optional filters and pagination
+      parameters:
+      - description: Group name
+        in: query
+        name: group
+        type: string
+      - description: Song title
+        in: query
+        name: song
+        type: string
+      - default: 10
+        description: Limit
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: Offset
+        in: query
+        name: offset
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Song'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all songs
+swagger: "2.0"

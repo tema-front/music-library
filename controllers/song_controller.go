@@ -25,6 +25,15 @@ func SetDB(database *gorm.DB) {
 	db = database
 }
 
+// @Summary Get all songs
+// @Description Get songs with optional filters and pagination
+// @Param group query string false "Group name"
+// @Param song query string false "Song title"
+// @Param limit query int false "Limit" default(10)
+// @Param offset query int false "Offset" default(0)
+// @Success 200 {array} models.Song
+// @Failure 500 {object} string
+// @Router /song/list [get]
 func GetSongs(w http.ResponseWriter, r *http.Request) {
 	var songs []models.Song
 
@@ -52,6 +61,15 @@ func GetSongs(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+// @Summary Get song text
+// @Description Get the text of a song by its ID with pagination
+// @Param id path int true "Song ID"
+// @Param limit query int false "Limit" default(10)
+// @Param offset query int false "Offset" default(0)
+// @Success 200 {array} string
+// @Failure 400 {object} string
+// @Failure 500 {object} string
+// @Router /song/{id}/text [get]
 func GetSongText(w http.ResponseWriter, r *http.Request) {
 	songIDStr := chi.URLParam(r, "id")
 	songID, err := strconv.Atoi(songIDStr)
@@ -86,6 +104,13 @@ func GetSongText(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+// @Summary Delete a song
+// @Description Delete a song by ID
+// @Param id path int true "Song ID"
+// @Success 204
+// @Failure 404 {object} string
+// @Failure 500 {object} string
+// @Router /song/{id}/delete [delete]
 func DeleteSong(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if err := db.Delete(&models.Song{}, id).Error; err != nil {
@@ -95,6 +120,15 @@ func DeleteSong(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
+// @Summary Edit a song
+// @Description Edit song details by ID
+// @Param id path int true "Song ID"
+// @Param song body models.Song true "Updated song data"
+// @Success 200 {object} models.Song
+// @Failure 400 {object} string
+// @Failure 404 {object} string
+// @Failure 500 {object} string
+// @Router /song/{id}/edit [put]
 func EditSong(w http.ResponseWriter, r *http.Request) {
 	songIDStr := chi.URLParam(r, "id")
 	songID, err := strconv.Atoi(songIDStr)
@@ -120,6 +154,13 @@ func EditSong(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(song)
 }
 
+// @Summary Add a new song
+// @Description Add a new song to the library
+// @Param song body models.Song true "Song data"
+// @Success 201 {object} models.Song
+// @Failure 400 {object} string
+// @Failure 500 {object} string
+// @Router /song/create [post]
 func AddSong(w http.ResponseWriter, r *http.Request) {
 	var song models.Song
 	if err := json.NewDecoder(r.Body).Decode(&song); err != nil {
@@ -143,6 +184,7 @@ func AddSong(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
+// getSongDetail fetches additional song details from an external API
 func getSongDetail(group, song string) (*models.SongDetail, error) {
 	url := fmt.Sprintf("http://api.example.com/info?group=%s&song=%s", group, song)
 	resp, err := http.Get(url)
